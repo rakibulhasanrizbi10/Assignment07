@@ -125,36 +125,16 @@ export default function AuthForm({ mode }: AuthFormProps) {
     }
   };
 
-  // Demo Social Login handler for instant examiner testing
   const handleSocialLogin = async (provider: "google" | "github") => {
     setIsLoading(true);
     try {
-      // First try BetterAuth social sign in if configured
-      const demoEmail = `${provider}_user@bazardor.com`;
-      const demoName = provider === "google" ? "Google User" : "GitHub Developer";
-      
-      // Auto-register/login demo user so examiner can test social click effortlessly
-      try {
-        await signUp.email({
-          name: demoName,
-          email: demoEmail,
-          password: "password123",
-        });
-      } catch {
-        // user may already exist
-      }
-
-      const res = await signIn.email({
-        email: demoEmail,
-        password: "password123",
+      const res = await signIn.social({
+        provider,
+        callbackURL,
       });
 
       if (res.error) {
-        toast.error(`${provider} দিয়ে সাইন ইন করতে সমস্যা হয়েছে।`);
-      } else {
-        toast.success(`${provider === "google" ? "Google" : "GitHub"} অ্যাকাউন্ট দিয়ে সফলভাবে যুক্ত হয়েছেন!`);
-        window.location.href = callbackURL;
-        return;
+        toast.error(`${provider === "google" ? "Google" : "GitHub"} দিয়ে সাইন ইন করতে সমস্যা হয়েছে।`);
       }
     } catch {
       toast.error("সোশ্যাল লগইনে সমস্যা হয়েছে।");
