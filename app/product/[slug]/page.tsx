@@ -33,13 +33,16 @@ export default async function ProductDetailsPage({ params }: ProductPageProps) {
 
   const avgPrice =
     product.markets && product.markets.length > 0
-      ? Math.round(
-          product.markets.reduce(
-            (acc, m) => acc + (m.min + m.max) / 2,
-            0
-          ) / product.markets.length
-        )
+      ? product.markets.reduce(
+          (acc, market) => acc + (market.min + market.max) / 2,
+          0
+        ) / product.markets.length
       : product.today;
+  const avgPriceDecimals = Number.isInteger(avgPrice)
+    ? 0
+    : Number.isInteger(avgPrice * 10)
+      ? 1
+      : 2;
 
   const dirSymbol = getDirectionSymbol(product.change.dir);
   const dirClass = getDirectionClass(product.change.dir);
@@ -173,7 +176,7 @@ export default async function ProductDetailsPage({ params }: ProductPageProps) {
                   গড় দাম
                 </div>
                 <div className="stat-value text-2xl font-bold text-primary my-1">
-                  {formatBanglaPrice(avgPrice)}
+                  {formatBanglaPrice(avgPrice, avgPriceDecimals)}
                   <span className="text-sm font-medium text-base-content/80">
                     {" "}
                     টাকা
