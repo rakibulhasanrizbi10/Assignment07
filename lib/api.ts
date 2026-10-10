@@ -36,31 +36,19 @@ async function syncRemoteData() {
 }
 
 async function fetchWithFallback<T>(endpoint: string, fallbackData: T): Promise<T> {
-  // Fast 1200ms timeout so user is never blocked
-  try {
-    const res = await fetch(`${BASE_URL_1}${endpoint}`, {
-      headers: { Accept: "application/json" },
-      signal: AbortSignal.timeout(1200),
-    });
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data) && data.length > 0) return data as T;
-      if (data && typeof data === "object") return data as T;
-    }
-  } catch {
-    // Try alternative API quickly
+  for (const baseUrl of [BASE_URL_1, BASE_URL_2]) {
     try {
-      const res = await fetch(`${BASE_URL_2}${endpoint}`, {
+      const res = await fetch(`${baseUrl}${endpoint}`, {
         headers: { Accept: "application/json" },
         signal: AbortSignal.timeout(1200),
       });
-      if (res.ok) {
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) return data as T;
-        if (data && typeof data === "object") return data as T;
-      }
+      if (!res.ok) continue;
+
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) return data as T;
+      if (data && typeof data === "object") return data as T;
     } catch {
-      // Return fallback
+      continue;
     }
   }
 
