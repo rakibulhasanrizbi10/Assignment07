@@ -18,26 +18,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const currentCategory = categories.find((c) => c.slug === slug);
 
-  // If category is not found or empty
   if (!currentCategory) {
-    return (
-      <div className="mx-auto flex w-full max-w-4xl flex-col items-center justify-center min-h-[60vh] gap-6 px-4 py-16 text-center">
-        <div className="rounded-3xl border border-dashed border-base-300 bg-base-100 p-12 max-w-md w-full shadow-sm">
-          <p aria-hidden="true" className="text-6xl mb-4">
-            🧺
-          </p>
-          <h1 className="text-2xl font-bold text-base-content">
-            ক্যাটাগরিটি পাওয়া যায়নি
-          </h1>
-          <p className="mt-2 text-sm text-base-content/70">
-            আপনি যে ক্যাটাগরি খুঁজছেন তা বর্তমানে উপলব্ধ নেই।
-          </p>
-          <Link href="/" className="btn btn-primary mt-6">
-            হোম পেজে ফিরে যান
-          </Link>
-        </div>
-      </div>
-    );
+    notFound();
   }
 
   return (

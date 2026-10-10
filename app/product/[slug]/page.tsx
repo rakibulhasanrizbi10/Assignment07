@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { getProductBySlug } from "@/lib/api";
 import AuthGuard from "@/components/AuthGuard";
 import {
@@ -21,24 +22,7 @@ export default async function ProductDetailsPage({ params }: ProductPageProps) {
   const product = await getProductBySlug(slug);
 
   if (!product) {
-    return (
-      <div className="mx-auto flex w-full max-w-4xl flex-col items-center justify-center min-h-[60vh] gap-6 px-4 py-16 text-center">
-        <div className="rounded-3xl border border-dashed border-base-300 bg-base-100 p-12 max-w-md w-full shadow-sm">
-          <p aria-hidden="true" className="text-6xl mb-4">
-            🔍
-          </p>
-          <h1 className="text-2xl font-bold text-base-content">
-            পণ্যটি খুঁজে পাওয়া যায়নি
-          </h1>
-          <p className="mt-2 text-sm text-base-content/70">
-            সম্ভবত পণ্যটি মুছে ফেলা হয়েছে অথবা ভুল লিংক ব্যবহার করা হয়েছে।
-          </p>
-          <Link href="/" className="btn btn-primary mt-6">
-            হোম পেজে ফিরে যান
-          </Link>
-        </div>
-      </div>
-    );
+    notFound();
   }
 
   // Price statistics calculations
