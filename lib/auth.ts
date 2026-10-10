@@ -67,6 +67,24 @@ db.exec(`
 `);
 
 const vercelLiveUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "";
+const socialProviders = {
+  ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+    ? {
+        google: {
+          clientId: process.env.GOOGLE_CLIENT_ID,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        },
+      }
+    : {}),
+  ...(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET
+    ? {
+        github: {
+          clientId: process.env.GITHUB_CLIENT_ID,
+          clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        },
+      }
+    : {}),
+};
 
 export const auth = betterAuth({
   baseURL:
@@ -102,5 +120,6 @@ export const auth = betterAuth({
     minPasswordLength: 4,
     autoSignIn: true,
   },
+  socialProviders,
 });
 
