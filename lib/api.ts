@@ -78,8 +78,7 @@ export async function getProducts(category?: string): Promise<Product[]> {
   syncRemoteData();
 
   if (category) {
-    const filtered = cachedProducts.filter((p) => p.category === category);
-    if (filtered.length > 0) return filtered;
+    return cachedProducts.filter((p) => p.category === category);
   }
   return cachedProducts;
 }
