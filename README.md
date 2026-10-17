@@ -80,7 +80,7 @@ BETTER_AUTH_URL="http://localhost:3000"
 npm run dev
 ```
 
-৫. Visit the website: https://bazardor7.netlify.app/
+৫. Visit the website: https://assignment07-sable.vercel.app/
 
 ৬. প্রোডাকশন বিল্ড তৈরি ও টেস্ট করতে:
 ```bash
